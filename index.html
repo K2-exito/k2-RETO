@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta K2: Plataforma Social de Aprendizaje</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUnV0YSBLMiIsInNob3J0X25hbWUiOiJLMiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjZmY2NjAwIn0=">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+        
+        :root {
+            --primary-color: #ff6600;
+            --secondary-color: #ff8800;
+            --dark-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-light: #ffffff;
+            --success-color: #00ff00;
+            --error-color: #ff0000;
+            --warning-color: #ffaa00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 50%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+        
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .login-logo {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #333;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .google-btn {
+            background: #db4437;
+            color: white;
+        }
+        
+        .facebook-btn {
+            background: #3b5998;
+            color: white;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .referral-input {
+            margin-top: 15px;
+        }
+        
+        .referral-input input {
+            border-color: var(--warning-color);
+        }
+        
+        /* Main Game Interface */
+        .game-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none;
+        }
+        
+        .game-container.active {
+            display: block;
+        }
+        
+        /* Header with User Info */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #333, #555);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 3px solid white;
+        }
+        
+        .user-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .online-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+        
+        .status-dot.offline {
+            background: var(--error-color);
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .nav-tab {
+            padding: 12px 25px;
+            background: var(--card-bg);
+            border: 2px solid #333;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-color: var(--primary-color);
+        }
+        
+        .nav-tab:hover {
+            border-color: var(--primary-color);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,102,0,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Referral System */
+        .referral-section {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--warning-color);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .referral-code {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .code-display {
+            background: #333;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--warning-color);
+            flex: 1;
+            text-align: center;
+            border: 2px solid var(--warning-color);
+        }
+        
+        .copy-btn {
+            padding: 15px 20px;
+            background: var(--warning-color);
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Social Share */
+        .social-share {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-facebook { background: #3b5998; color: white; }
+        .share-twitter { background: #1da1f2; color: white; }
+        .share-whatsapp { background: #25d366; color: white; }
+        .share-linkedin { background: #0077b5; color: white; }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Game Modules */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .module-card {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 102, 0, 0.3);
+        }
+        
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .module-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .module-progress {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .module-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+        }
+        
+        /* Puzzle Game */
+        .puzzle-container {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            max-width: 400px;
+            margin: 20px auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .puzzle-piece {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+        }
+        
+        .puzzle-piece.empty {
+            background: #555;
+        }
+        
+        /* Achievements */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .achievement {
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid #555;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .achievement.unlocked {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(255, 136, 0, 0.1));
+        }
+        
+        .achievement.unlocked::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--success-color);
+            color: black;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Rank Badges */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .rank-master { background: linear-gradient(135deg, #888, #aaa); }
+        .rank-bronce { background: linear-gradient(135deg, #cd7f32, #e6a85c); }
+        .rank-plata { background: linear-gradient(135deg, #c0c0c0, #e0e0e0); }
+        .rank-oro { background: linear-gradient(135deg, #ffd700, #ffed4e); color: black; }
+        .rank-rubi { background: linear-gradient(135deg, #e0115f, #ff4081); }
+        .rank-diamante { background: linear-gradient(135deg, #b9f2ff, #87ceeb); color: black; }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #333333, var(--card-bg));
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #00cc00);
+            color: black;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, var(--success-color), #00cc00);
+            color: black;
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, var(--error-color), #cc0000);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 10px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                justify-content: center;
+            }
+            
+            .social-share {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .referral-code {
+                flex-direction: column;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            display: none;
+            background: linear-gradient(135deg, var(--card-bg), #2d2d2d);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .quiz-container.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            background: #333;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: var(--primary-color);
+            background: rgba(255, 102, 0, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary-color);
+            background: rgba(255, 102, 0, 0.2);
+        }
+        
+        .option.correct {
+            border-color: var(--success-color);
+            background: rgba(0, 255, 0, 0.2);
+        }
+        
+        .option.incorrect {
+            border-color: var(--error-color);
+            background: rgba(255, 0, 0, 0.2);
+        }
+        
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">🚀</div>
+            <h1 class="login-title">Ruta K2</h1>
+            <p style="margin-bottom: 30px; opacity: 0.8;">Salud, Impacto y Riqueza</p>
+            
+            <div id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario o Email</label>
+                    <input type="text" id="username" placeholder="Ingresa tu usuario">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin: 20px 0;" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                
+                <div style="text-align: center; margin: 20px 0; opacity: 0.6;">o continúa con</div>
+                
+                <div class="social-login">
+                    <button class="social-btn google-btn" onclick="loginWithGoogle()">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="social-btn facebook-btn" onclick="loginWithFacebook()">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="#" onclick="showRegister()" style="color: var(--primary-color);">¿No tienes cuenta? Regístrate</a>
+                </div>
+            </div>
+            
+            <div id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label for="newUsername">Usuario</label>
+                    <input type="text" id="newUsername" placeholder="Elige un usuario">
+                </div>
+                <div class="form-group">
+                    <label for="newEmail">Email</label>
+                    <input type="email" id="newEmail" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Contraseña</label>
+                    <input type="password" id="newPassword" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="form-group referral-input">
+                    <label for="referralCode">Código de Referido (Opcional)</label>
+                    <input type="text" id="referralCode" placeholder="Código de quien te invitó">
+                </div>
+                <button class="btn btn-success" style="width: 100%; margin: 20px 0;" onclick="register()">
+                    <i class="fas fa-user-plus"></i> Crear Cuenta
+                </button>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="#" onclick="showLogin()" style="color: var(--primary-color);">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Interface -->
+    <div class="game-container" id="gameContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-info">
+                    <h2 id="displayName">Usuario</h2>
+                    <div class="user-stats">
+                        <span class="rank-badge" id="userRankBadge">
+                            <i class="fas fa-star"></i> Master
+                        </span>
+                        <span><i class="fas fa-coins"></i> <span id="headerCoins">0</span> K2 Coins</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="online-status">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Online</span>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('dashboard')">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </div>
+            <div class="nav-tab" onclick="showTab('modules')">
+                <i class="fas fa-graduation-cap"></i> Módulos
+            </div>
+            <div class="nav-tab" onclick="showTab('games')">
+                <i class="fas fa-gamepad"></i> Mini-Juegos
+            </div>
+            <div class="nav-tab" onclick="showTab('referrals')">
+                <i class="fas fa-users"></i> Referidos
+            </div>
+            <div class="nav-tab" onclick="showTab('achievements')">
+                <i class="fas fa-trophy"></i> Logros
+            </div>
+            <div class="nav-tab" onclick="showTab('leaderboard')">
+                <i class="fas fa-medal"></i> Ranking
+            </div>
+            <div class="nav-tab" onclick="showTab('profile')">
+                <i class="fas fa-user-cog"></i> Perfil
+            </div>
+            <div class="nav-tab" onclick="showTab('transfer')">
+                <i class="fas fa-exchange-alt"></i> Transferir
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-value" id="totalCoins">0</div>
+                    <div class="stat-label">K2 Coins Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-value" id="totalPoints">0</div>
+                    <div class="stat-label">Puntos de Experiencia</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value" id="totalReferrals">0</div>
+                    <div class="stat-label">Referidos Exitosos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                    <div class="stat-value" id="dailyStreak">0</div>
+                    <div class="stat-label">Días Consecutivos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value" id="timeSpent">0h</div>
+                    <div class="stat-label">Tiempo Jugado</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-value" id="virtualEarnings">$0</div>
+                    <div class="stat-label">Ganancias Virtuales</div>
+                </div>
+            </div>
+
+            <!-- Daily Missions -->
+            <div class="stat-card" style="margin-bottom: 20px;">
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-tasks"></i> Misiones Diarias
+                </h3>
+                <div id="dailyMissions">
+                    <div class="mission-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333;">
+                        <span><i class="fas fa-question-circle"></i> Responder 5 preguntas correctamente</span>
+                        <span style="color: var(--warning-color);">3/5</span>
+                    </div>
+                    <div class="mission-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333;">
+                        <span><i class="fas fa-gamepad"></i> Jugar un mini-juego</span>
+                        <span style="color: var(--success-color);">✓</span>
+                    </div>
+                    <div class="mission-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                        <span><i class="fas fa-share"></i> Compartir tu progreso</span>
+                        <span style="color: var(--error-color);">0/1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Tab -->
+        <div class="tab-content" id="modules">
+            <div class="modules-grid">
+                <div class="module-card" onclick="startModule('productos')">
+                    <div class="module-icon">🌿</div>
+                    <div class="module-title">Conoce tus Productos</div>
+                    <div class="module-description">Domina las características y beneficios de cada producto K2</div>
+                    <div class="module-progress">
+                        <div class="module-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; opacity: 0.8;">0/10 preguntas</div>
+                </div>
+                
+                <div class="module-card" onclick="startModule('compensacion')">
+                    <div class="module-icon">💰</div>
+                    <div class="module-title">Plan de Compensación</div>
+                    <div class="module-description">Aprende cómo maximizar tus ganancias con el sistema K2</div>
+                    <div class="module-progress">
+                        <div class="module-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; opacity: 0.8;">0/10 preguntas</div>
+                </div>
+                
+                <div class="module-card" onclick="startModule('ventas')">
+                    <div class="module-icon">🎯</div>
+                    <div class="module-title">Estrategias de Venta</div>
+                    <div class="module-description">Técnicas de cierre y manejo de objeciones</div>
+                    <div class="module-progress">
+                        <div class="module-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; opacity: 0.8;">0/10 preguntas</div>
+                </div>
+                
+                <div class="module-card" onclick="startModule('liderazgo')">
+                    <div class="module-icon">👑</div>
+                    <div class="module-title">Liderazgo K2</div>
+                    <div class="module-description">Construye y lidera tu equipo hacia el éxito</div>
+                    <div class="module-progress">
+                        <div class="module-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; opacity: 0.8;">0/10 preguntas</div>
+                </div>
+            </div>
+
+            <!-- Quiz Container -->
+            <div class="quiz-container" id="quizContainer">
+                <div class="question" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+                <div class="quiz-controls">
+                    <div id="questionCounter">Pregunta 1 de 10</div>
+                    <div>
+                        <button class="btn btn-secondary" onclick="closeQuiz()">
+                            <i class="fas fa-times"></i> Salir
+                        </button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                            <i class="fas fa-arrow-right"></i> Siguiente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div class="tab-content" id="games">
+            <div class="modules-grid">
+                <div class="module-card" onclick="startMiniGame('runner')">
+                    <div class="module-icon">🏃‍♂️</div>
+                    <div class="module-title">K2 Runner</div>
+                    <div class="module-description">Salta obstáculos y recolecta K2 Coins en este emocionante juego</div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span style="color: var(--warning-color);">Mejor puntuación: <span id="runnerBest">0</span></span>
+                    </div>
+                </div>
+                
+                <div class="module-card" onclick="startMiniGame('puzzle')">
+                    <div class="module-icon">🧩</div>
+                    <div class="module-title">Rompecabezas K2</div>
+                    <div class="module-description">Resuelve puzzles con las formas de los productos K2</div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span style="color: var(--warning-color);">Puzzles resueltos: <span id="puzzlesSolved">0</span></span>
+                    </div>
+                </div>
+                
+                <div class="module-card" onclick="startMiniGame('memory')">
+                    <div class="module-icon">🧠</div>
+                    <div class="module-title">Memoria K2</div>
+                    <div class="module-description">Encuentra los pares de productos en este juego de memoria</div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span style="color: var(--warning-color);">Mejor tiempo: <span id="memoryBest">--</span></span>
+                    </div>
+                </div>
+                
+                <div class="module-card" onclick="startMiniGame('trivia')">
+                    <div class="module-icon">⚡</div>
+                    <div class="module-title">Trivia Rápida</div>
+                    <div class="module-description">Responde preguntas rápidas en 30 segundos</div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span style="color: var(--warning-color);">Mejor racha: <span id="triviaBest">0</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Canvas Container -->
+            <div id="gameCanvas" style="display: none;">
+                <div class="puzzle-container">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-gamepad"></i> <span id="gameTitle">Mini-Juego</span>
+                    </h3>
+                    <div id="gameArea">
+                        <!-- Game content will be inserted here -->
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-secondary" onclick="closeGame()">
+                            <i class="fas fa-times"></i> Cerrar Juego
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referrals Tab -->
+        <div class="tab-content" id="referrals">
+            <div class="referral-section">
+                <h3 style="color: var(--warning-color); text-align: center; margin-bottom: 20px;">
+                    <i class="fas fa-users"></i> Sistema de Referidos
+                </h3>
+                <p style="text-align: center; margin-bottom: 20px; opacity: 0.8;">
+                    ¡Invita a tus amigos y gana 5 K2 Coins por cada referido exitoso!
+                </p>
+                
+                <div class="referral-code">
+                    <div class="code-display" id="userReferralCode">K2-USER123</div>
+                    <button class="copy-btn" onclick="copyReferralCode()">
+                        <i class="fas fa-copy"></i> Copiar
+                    </button>
+                </div>
+                
+                <div class="social-share">
+                    <button class="share-btn share-facebook" onclick="shareOnFacebook()">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                    <button class="share-btn share-twitter" onclick="shareOnTwitter()">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
+                    <button class="share-btn share-whatsapp" onclick="shareOnWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button class="share-btn share-linkedin" onclick="shareOnLinkedIn()">
+                        <i class="fab fa-linkedin-in"></i> LinkedIn
+                    </button>
+                </div>
+
+                <!-- Social Media Rewards -->
+                <div style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); border: 2px solid #25d366; border-radius: 15px; padding: 20px; margin-top: 20px;">
+                    <h4 style="color: #25d366; text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-gift"></i> Gana K2 Coins Siguiéndonos
+                    </h4>
+                    <div class="social-share">
+                        <button class="share-btn share-facebook" id="followFacebookBtn" onclick="followFacebook()">
+                            <i class="fab fa-facebook-f"></i> Seguir (+10 Coins)
+                        </button>
+                        <button class="share-btn" id="followTikTokBtn" onclick="followTikTok()" style="background: #000000; color: white;">
+                            <i class="fab fa-tiktok"></i> Seguir (+10 Coins)
+                        </button>
+                        <button class="share-btn" id="visitWebsiteBtn" onclick="visitWebsite()" style="background: #ff6600; color: white;">
+                            <i class="fas fa-globe"></i> Visitar (+5 Coins)
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="generateReferralLink()">
+                        <i class="fas fa-link"></i> Generar Link Personalizado
+                    </button>
+                </div>
+            </div>
+
+            <!-- Referral Stats -->
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-value" id="referralCount">0</div>
+                    <div class="stat-label">Referidos Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-value" id="referralEarnings">0</div>
+                    <div class="stat-label">K2 Coins Ganadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-value" id="conversionRate">0%</div>
+                    <div class="stat-label">Tasa de Conversión</div>
+                </div>
+            </div>
+
+            <!-- Recent Referrals -->
+            <div class="stat-card">
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-history"></i> Referidos Recientes
+                </h3>
+                <div id="recentReferrals">
+                    <div style="text-align: center; opacity: 0.6; padding: 20px;">
+                        Aún no tienes referidos. ¡Comparte tu código y comienza a ganar!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div class="tab-content" id="achievements">
+            <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-trophy"></i> Logros y Reconocimientos
+            </h3>
+            
+            <div class="achievements-grid">
+                <div class="achievement" id="achievement1">
+                    <div class="achievement-icon">🌱</div>
+                    <div class="achievement-title">Primer Paso</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Completa tu primer módulo</div>
+                </div>
+                <div class="achievement" id="achievement2">
+                    <div class="achievement-icon">💎</div>
+                    <div class="achievement-title">Experto en Productos</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Domina el módulo de productos</div>
+                </div>
+                <div class="achievement" id="achievement3">
+                    <div class="achievement-icon">🎯</div>
+                    <div class="achievement-title">Maestro de Ventas</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Completa el módulo de ventas</div>
+                </div>
+                <div class="achievement" id="achievement4">
+                    <div class="achievement-icon">👑</div>
+                    <div class="achievement-title">Líder Nato</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Domina el liderazgo K2</div>
+                </div>
+                <div class="achievement" id="achievement5">
+                    <div class="achievement-icon">🏃‍♂️</div>
+                    <div class="achievement-title">Corredor K2</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Alcanza 1000 puntos en K2 Runner</div>
+                </div>
+                <div class="achievement" id="achievement6">
+                    <div class="achievement-icon">🧩</div>
+                    <div class="achievement-title">Maestro de Puzzles</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Resuelve 10 rompecabezas</div>
+                </div>
+                <div class="achievement" id="achievement7">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-title">Racha de Fuego</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">7 días consecutivos jugando</div>
+                </div>
+                <div class="achievement" id="achievement8">
+                    <div class="achievement-icon">👥</div>
+                    <div class="achievement-title">Reclutador</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Refiere a 5 personas</div>
+                </div>
+                <div class="achievement" id="achievement9">
+                    <div class="achievement-icon">💰</div>
+                    <div class="achievement-title">Millonario K2</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Acumula 1000 K2 Coins</div>
+                </div>
+                <div class="achievement" id="achievement10">
+                    <div class="achievement-icon">🚀</div>
+                    <div class="achievement-title">Rango Diamante</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Alcanza el rango Diamante</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Tab -->
+        <div class="tab-content" id="leaderboard">
+            <div class="stat-card">
+                <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 30px;">
+                    <i class="fas fa-medal"></i> Tabla de Líderes Global
+                </h3>
+                
+                <div id="leaderboardList">
+                    <div class="leader-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333; background: linear-gradient(135deg, #ffd700, #ffed4e); color: black; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🥇</span>
+                            <div>
+                                <div style="font-weight: bold;">Ana Martínez</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">Rango Diamante</div>
+                            </div>
+                        </div>
+                        <span style="font-weight: bold;">2,450 K2 Coins</span>
+                    </div>
+                    
+                    <div class="leader-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333; background: linear-gradient(135deg, #c0c0c0, #e0e0e0); color: black; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🥈</span>
+                            <div>
+                                <div style="font-weight: bold;">Carlos Ruiz</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">Rango Rubí</div>
+                            </div>
+                        </div>
+                        <span style="font-weight: bold;">2,100 K2 Coins</span>
+                    </div>
+                    
+                    <div class="leader-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333; background: linear-gradient(135deg, #cd7f32, #e6a85c); color: white; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.5rem;">🥉</span>
+                            <div>
+                                <div style="font-weight: bold;">María González</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;">Rango Oro</div>
+                            </div>
+                        </div>
+                        <span style="font-weight: bold;">1,890 K2 Coins</span>
+                    </div>
+                    
+                    <div class="leader-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.2rem;">4️⃣</span>
+                            <div>
+                                <div style="font-weight: bold;" id="playerNameLeaderboard">Tú</div>
+                                <div style="font-size: 0.8rem; opacity: 0.7;" id="playerRankLeaderboard">Rango Master</div>
+                            </div>
+                        </div>
+                        <span style="font-weight: bold;" id="playerCoinsLeaderboard">0 K2 Coins</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div class="tab-content" id="profile">
+            <div class="stat-card">
+                <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 30px;">
+                    <i class="fas fa-user-cog"></i> Personalizar Perfil
+                </h3>
+                
+                <!-- Avatar Selection -->
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">Selecciona tu Avatar</h4>
+                    <div id="avatarGrid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; max-width: 400px; margin: 0 auto;">
+                        <!-- Avatar options will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">Información del Perfil</h4>
+                    <div class="form-group">
+                        <label>Nombre de Usuario</label>
+                        <input type="text" id="profileUsername" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre para Mostrar</label>
+                        <input type="text" id="profileDisplayName" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    <button class="btn btn-primary" onclick="updateProfile()">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+
+                <!-- QR Code Section -->
+                <div style="margin-bottom: 30px; text-align: center;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">Tu Código QR</h4>
+                    <div id="qrCode" style="background: white; padding: 20px; border-radius: 15px; display: inline-block; margin-bottom: 15px;">
+                        <canvas id="qrCanvas" width="200" height="200"></canvas>
+                    </div>
+                    <br>
+                    <button class="btn btn-secondary" onclick="downloadQR()">
+                        <i class="fas fa-download"></i> Descargar QR
+                    </button>
+                    <button class="btn btn-primary" onclick="shareQR()">
+                        <i class="fas fa-share"></i> Compartir QR
+                    </button>
+                </div>
+
+                <!-- Save Progress -->
+                <div style="text-align: center;">
+                    <button class="btn btn-success" onclick="saveProgressManually()">
+                        <i class="fas fa-cloud-upload-alt"></i> Guardar Progreso
+                    </button>
+                    <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9rem;">
+                        Tu progreso se guarda automáticamente cada 30 segundos
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer Tab -->
+        <div class="tab-content" id="transfer">
+            <div class="stat-card">
+                <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 30px;">
+                    <i class="fas fa-exchange-alt"></i> Transferir K2 Coins
+                </h3>
+                
+                <!-- K2 Coins Notice -->
+                <div style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: black; padding: 20px; border-radius: 15px; margin-bottom: 30px; text-align: center;">
+                    <h4 style="margin-bottom: 10px;"><i class="fas fa-info-circle"></i> ¡Importante!</h4>
+                    <p style="margin: 0; font-weight: 600;">
+                        Las K2 Coins próximamente estarán en uso real. Mantén tu saldo seguro y transfiere solo a usuarios verificados.
+                    </p>
+                </div>
+
+                <!-- Transfer Form -->
+                <div style="margin-bottom: 30px;">
+                    <div class="form-group">
+                        <label>Usuario Destinatario</label>
+                        <input type="text" id="transferUsername" placeholder="Nombre de usuario o código de referido" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad a Transferir</label>
+                        <input type="number" id="transferAmount" min="1" placeholder="Cantidad de K2 Coins" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje (Opcional)</label>
+                        <input type="text" id="transferMessage" placeholder="Mensaje para el destinatario" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>PIN de Seguridad</label>
+                        <input type="password" id="transferPin" placeholder="Ingresa tu PIN de 4 dígitos" maxlength="4" style="width: 100%; padding: 12px; border: 2px solid #333; border-radius: 10px; background: #333; color: white;">
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <p style="opacity: 0.8;">Saldo disponible: <span style="color: var(--warning-color); font-weight: bold;" id="availableBalance">0</span> K2 Coins</p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="initiateTransfer()" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Enviar Transferencia
+                    </button>
+                </div>
+
+                <!-- Recent Transfers -->
+                <div>
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">Transferencias Recientes</h4>
+                    <div id="transferHistory">
+                        <div style="text-align: center; opacity: 0.6; padding: 20px;">
+                            No hay transferencias recientes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Game State Management
+        let gameState = {
+            user: {
+                id: null,
+                username: '',
+                email: '',
+                displayName: '',
+                avatar: '👤',
+                referralCode: '',
+                referredBy: null,
+                loginMethod: 'local'
+            },
+            stats: {
+                k2Coins: 0,
+                totalPoints: 0,
+                virtualEarnings: 0,
+                rank: 'Master',
+                totalReferrals: 0,
+                dailyStreak: 0,
+                timeSpent: 0,
+                lastLogin: null
+            },
+            progress: {
+                modules: {
+                    productos: { completed: 0, total: 10 },
+                    compensacion: { completed: 0, total: 10 },
+                    ventas: { completed: 0, total: 10 },
+                    liderazgo: { completed: 0, total: 10 }
+                },
+                achievements: [],
+                gameScores: {
+                    runner: 0,
+                    puzzle: 0,
+                    memory: 0,
+                    trivia: 0
+                },
+                socialFollows: []
+            },
+            currentModule: null,
+            currentQuestionIndex: 0,
+            moduleQuestions: [],
+            correctAnswers: 0,
+            isOnline: navigator.onLine
+        };
+
+        // Available avatars
+        const avatarOptions = [
+            '👤', '👨', '👩', '🧑', '👨‍💼', '👩‍💼', '👨‍🎓', '👩‍🎓', 
+            '🧑‍💻', '👨‍⚕️', '👩‍⚕️', '👨‍🏫', '👩‍🏫', '🧑‍🚀', '👨‍🎨', '👩‍🎨',
+            '🦸‍♂️', '🦸‍♀️', '🧙‍♂️', '🧙‍♀️', '👑', '🎯', '💎', '🚀', '⭐', '🔥'
+        ];
+
+        // Ranks Configuration
+        const ranks = [
+            { name: 'Master', points: 0, color: '#888', icon: '⭐' },
+            { name: 'Bronce', points: 100, color: '#cd7f32', icon: '🥉' },
+            { name: 'Plata', points: 300, color: '#c0c0c0', icon: '🥈' },
+            { name: 'Oro', points: 600, color: '#ffd700', icon: '🥇' },
+            { name: 'Rubí', points: 1000, color: '#e0115f', icon: '💎' },
+            { name: 'Diamante', points: 1500, color: '#b9f2ff', icon: '💠' }
+        ];
+
+        // Questions Database (same as before but organized)
+        const moduleQuestions = {
+            productos: [
+                {
+                    question: "¿Cuál es el principal beneficio del QC Plus?",
+                    options: ["Energía", "Antioxidante", "Digestivo", "Regenerador"],
+                    correct: 1,
+                    points: 20,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué producto es ideal para problemas digestivos?",
+                    options: ["Multimix B", "Aloe Vera", "Max Men", "Colágeno"],
+                    correct: 1,
+                    points: 20,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el componente principal del Max Men?",
+                    options: ["Maca", "Borojó", "Ginseng", "Tribulus"],
+                    correct: 1,
+                    points: 20,
+                    coins: 1
+                },
+                {
+                    question: "¿Para qué sirve principalmente el Colágeno hidrolizado?",
+                    options: ["Energía", "Digestión", "Piel y articulaciones", "Memoria"],
+                    correct: 2,
+                    points: 20,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué vitaminas contiene el Multimix B?",
+                    options: ["Vitamina C", "Complejo B + Maca", "Vitamina D", "Vitamina E"],
+                    correct: 1,
+                    points: 20,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la dosis recomendada del QC Plus para máxima absorción?",
+                    options: ["1 cápsula en ayunas", "2 cápsulas con comida", "3 cápsulas antes de dormir", "1 cápsula cada 8 horas"],
+                    correct: 0,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué contraindicación tiene el Aloe Vera que debes mencionar?",
+                    options: ["No tiene contraindicaciones", "Embarazo y lactancia", "Diabetes", "Hipertensión"],
+                    correct: 1,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuántos miligramos de colágeno hidrolizado contiene cada porción?",
+                    options: ["5,000 mg", "8,000 mg", "10,000 mg", "12,000 mg"],
+                    correct: 2,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué aminoácidos esenciales aporta el Max Men además del borojó?",
+                    options: ["Arginina y Lisina", "Triptófano y Tirosina", "Leucina y Valina", "Todos los anteriores"],
+                    correct: 3,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la ventaja competitiva del Multimix B vs otras marcas?",
+                    options: ["Precio más bajo", "Absorción sublingual", "Maca peruana orgánica", "Presentación en polvo"],
+                    correct: 2,
+                    points: 30,
+                    coins: 1
+                }
+            ],
+            compensacion: [
+                {
+                    question: "¿Cuál es el porcentaje del Bono Conector en el nivel 1?",
+                    options: ["30%", "45%", "50%", "60%"],
+                    correct: 1,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuántos puntos necesitas para activar el Bono Conector?",
+                    options: ["50 puntos", "70 puntos", "100 puntos", "120 puntos"],
+                    correct: 1,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Hasta qué porcentaje de descuento ofrece el Bono Impulso?",
+                    options: ["50%", "60%", "70%", "75%"],
+                    correct: 3,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el porcentaje del Bono Regalías en los niveles 1-3?",
+                    options: ["5%", "7%", "10%", "12%"],
+                    correct: 1,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuánto dinero adicional ofrece el Bono 3x3?",
+                    options: ["$50", "$75", "$100", "$150"],
+                    correct: 2,
+                    points: 25,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la diferencia entre el Bono Conector y el Bono Regalías?",
+                    options: ["No hay diferencia", "Conector es por venta directa, Regalías por recompra", "Conector es mensual, Regalías semanal", "Conector es mayor porcentaje"],
+                    correct: 1,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué requisito adicional necesitas para el Bono Regalías además de 70 puntos?",
+                    options: ["Tener 3 directos", "Recompra mensual", "Ser Bronce o superior", "Capacitar a tu equipo"],
+                    correct: 1,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿En qué niveles del Bono Regalías recibes 3%?",
+                    options: ["Niveles 1-3", "Niveles 4-7", "Niveles 8-10", "Todos los niveles"],
+                    correct: 2,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el volumen mínimo grupal para mantener el rango Diamante?",
+                    options: ["5,000 puntos", "10,000 puntos", "15,000 puntos", "20,000 puntos"],
+                    correct: 2,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué porcentaje del Bono Liderazgo recibe un Diamante del volumen de su organización?",
+                    options: ["2%", "3%", "4%", "5%"],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                }
+            ],
+            ventas: [
+                {
+                    question: "Cuando un prospecto dice 'Está muy caro', ¿cuál es la mejor respuesta?",
+                    options: [
+                        "Tienes razón, es caro",
+                        "¿Caro comparado con qué?",
+                        "Puedo hacerte descuento",
+                        "No es para todos"
+                    ],
+                    correct: 1,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la técnica más efectiva para crear urgencia?",
+                    options: [
+                        "Presionar con tiempo límite",
+                        "Mostrar escasez genuina",
+                        "Ofrecer descuentos",
+                        "Contar historias de éxito"
+                    ],
+                    correct: 1,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué significa 'Konsume' en la filosofía K2?",
+                    options: [
+                        "Comprar productos",
+                        "Usar los productos personalmente",
+                        "Vender productos",
+                        "Recomendar productos"
+                    ],
+                    correct: 1,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la mejor pregunta de cierre?",
+                    options: [
+                        "¿Quieres comprarlo?",
+                        "¿Te interesa?",
+                        "¿Prefieres el paquete A o B?",
+                        "¿Cuándo empezamos?"
+                    ],
+                    correct: 2,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "Ante la objeción 'No tengo tiempo', ¿qué respondes?",
+                    options: [
+                        "Entiendo perfectamente",
+                        "¿Cuándo tendrías tiempo?",
+                        "Precisamente por eso necesitas esto",
+                        "No te preocupes"
+                    ],
+                    correct: 2,
+                    points: 30,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el principio de neuromarketing más efectivo en K2?",
+                    options: [
+                        "Escasez artificial",
+                        "Prueba social con testimonios",
+                        "Precios altos = calidad",
+                        "Colores llamativos"
+                    ],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué palabra gatillo es más poderosa para vender salud?",
+                    options: [
+                        "Barato",
+                        "Transformación",
+                        "Rápido",
+                        "Fácil"
+                    ],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la secuencia correcta del proceso de venta K2?",
+                    options: [
+                        "Presentar-Cerrar-Seguir",
+                        "Conectar-Presentar-Cerrar-Seguir",
+                        "Vender-Cobrar-Entregar",
+                        "Llamar-Citar-Vender"
+                    ],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué técnica usas cuando el prospecto dice 'Lo voy a pensar'?",
+                    options: [
+                        "Respetas su decisión",
+                        "Ofreces descuento",
+                        "Preguntas qué específicamente va a pensar",
+                        "Insistes más"
+                    ],
+                    correct: 2,
+                    points: 40,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la diferencia entre 'Komparte' y 'Konstruye'?",
+                    options: [
+                        "No hay diferencia",
+                        "Komparte es vender, Konstruye es reclutar",
+                        "Komparte es reclutar, Konstruye es desarrollar líderes",
+                        "Son sinónimos"
+                    ],
+                    correct: 2,
+                    points: 40,
+                    coins: 1
+                }
+            ],
+            liderazgo: [
+                {
+                    question: "¿Cuál es la clave para construir un equipo sólido?",
+                    options: [
+                        "Reclutar muchas personas",
+                        "Enfocarse en las ventas",
+                        "Desarrollar líderes",
+                        "Ofrecer incentivos"
+                    ],
+                    correct: 2,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué significa 'Komparte' en K2?",
+                    options: [
+                        "Compartir productos",
+                        "Compartir la oportunidad",
+                        "Compartir ganancias",
+                        "Compartir experiencias"
+                    ],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el primer paso para 'Konstruir' tu red?",
+                    options: [
+                        "Hacer una lista de contactos",
+                        "Definir tu por qué",
+                        "Estudiar los productos",
+                        "Practicar presentaciones"
+                    ],
+                    correct: 1,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Cómo manejas a un distribuidor desmotivado?",
+                    options: [
+                        "Lo ignoras",
+                        "Le das más productos",
+                        "Reconectas con su por qué",
+                        "Lo presionas más"
+                    ],
+                    correct: 2,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la característica más importante de un líder K2?",
+                    options: [
+                        "Ser el mejor vendedor",
+                        "Tener muchos directos",
+                        "Ser ejemplo y mentor",
+                        "Ganar más dinero"
+                    ],
+                    correct: 2,
+                    points: 35,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la regla 80/20 aplicada al liderazgo K2?",
+                    options: [
+                        "80% vender, 20% reclutar",
+                        "80% desarrollar, 20% reclutar",
+                        "80% capacitar, 20% vender",
+                        "80% motivar, 20% controlar"
+                    ],
+                    correct: 1,
+                    points: 40,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué haces cuando un líder de tu equipo quiere renunciar?",
+                    options: [
+                        "Lo dejas ir sin más",
+                        "Le ofreces incentivos económicos",
+                        "Escuchas sus razones y reconectas con su visión",
+                        "Lo criticas por abandonar"
+                    ],
+                    correct: 2,
+                    points: 40,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es la frecuencia ideal para hacer seguimiento a nuevos distribuidores?",
+                    options: [
+                        "Una vez por semana",
+                        "Primeros 3 días críticos, luego semanal",
+                        "Solo cuando ellos pregunten",
+                        "Una vez al mes"
+                    ],
+                    correct: 1,
+                    points: 40,
+                    coins: 1
+                },
+                {
+                    question: "¿Qué porcentaje de tu tiempo debe dedicarse a desarrollar líderes vs reclutar?",
+                    options: [
+                        "50% - 50%",
+                        "70% desarrollar - 30% reclutar",
+                        "30% desarrollar - 70% reclutar",
+                        "90% desarrollar - 10% reclutar"
+                    ],
+                    correct: 1,
+                    points: 45,
+                    coins: 1
+                },
+                {
+                    question: "¿Cuál es el indicador más importante del éxito de tu liderazgo?",
+                    options: [
+                        "Tu volumen personal de ventas",
+                        "Cantidad de directos que tienes",
+                        "Cuántos líderes has desarrollado que ya no te necesitan",
+                        "Tu rango actual"
+                    ],
+                    correct: 2,
+                    points: 45,
+                    coins: 1
+                }
+            ]
+        };
+
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showNotification('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            // Simulate login
+            gameState.user.username = username;
+            gameState.user.displayName = username;
+            gameState.user.id = 'user_' + Date.now();
+            gameState.user.referralCode = 'K2-' + username.toUpperCase().substring(0, 6) + Math.floor(Math.random() * 1000);
+
+            initializeGame();
+        }
+
+        function loginWithGoogle() {
+            // Simulate Google login
+            gameState.user.username = 'google_user';
+            gameState.user.displayName = 'Usuario Google';
+            gameState.user.email = 'usuario@gmail.com';
+            gameState.user.id = 'google_' + Date.now();
+            gameState.user.loginMethod = 'google';
+            gameState.user.referralCode = 'K2-GOOGLE' + Math.floor(Math.random() * 1000);
+
+            showNotification('¡Bienvenido! Login con Google exitoso', 'success');
+            initializeGame();
+        }
+
+        function loginWithFacebook() {
+            // Simulate Facebook login
+            gameState.user.username = 'facebook_user';
+            gameState.user.displayName = 'Usuario Facebook';
+            gameState.user.email = 'usuario@facebook.com';
+            gameState.user.id = 'facebook_' + Date.now();
+            gameState.user.loginMethod = 'facebook';
+            gameState.user.referralCode = 'K2-FB' + Math.floor(Math.random() * 1000);
+
+            showNotification('¡Bienvenido! Login con Facebook exitoso', 'success');
+            initializeGame();
+        }
+
+        function register() {
+            const username = document.getElementById('newUsername').value;
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+            const referralCode = document.getElementById('referralCode').value;
+
+            if (!username || !email || !password) {
+                showNotification('Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+
+            // Process referral
+            if (referralCode) {
+                gameState.user.referredBy = referralCode;
+                // Award referral bonus to referrer (simulated)
+                showNotification('¡Código de referido válido! Tu referidor recibirá 5 K2 Coins', 'success');
+            }
+
+            gameState.user.username = username;
+            gameState.user.email = email;
+            gameState.user.displayName = username;
+            gameState.user.id = 'user_' + Date.now();
+            gameState.user.referralCode = 'K2-' + username.toUpperCase().substring(0, 6) + Math.floor(Math.random() * 1000);
+
+            showNotification('¡Cuenta creada exitosamente!', 'success');
+            initializeGame();
+        }
+
+        function logout() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                saveProgress();
+                location.reload();
+            }
+        }
+
+        function initializeGame() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('gameContainer').classList.add('active');
+            
+            loadProgress();
+            updateAllDisplays();
+            checkDailyStreak();
+            updateOnlineStatus();
+            initializeAvatarGrid();
+            generateQRCode();
+            updateSocialButtons();
+            updateTransferHistory();
+            
+            // Set default PIN if not set
+            if (!gameState.user.pin) {
+                gameState.user.pin = '1234';
+            }
+            
+            showNotification(`¡Bienvenido ${gameState.user.displayName}! Tu aventura K2 continúa`, 'success');
+        }
+
+        // Game Functions
+        function updateAllDisplays() {
+            // Update header
+            document.getElementById('displayName').textContent = gameState.user.displayName;
+            document.getElementById('userAvatar').textContent = gameState.user.avatar;
+            document.getElementById('headerCoins').textContent = gameState.stats.k2Coins;
+            
+            // Update rank badge
+            const rankBadge = document.getElementById('userRankBadge');
+            const currentRank = ranks.find(r => r.name === gameState.stats.rank);
+            rankBadge.innerHTML = `<i class="fas fa-star"></i> ${gameState.stats.rank}`;
+            rankBadge.className = `rank-badge rank-${gameState.stats.rank.toLowerCase()}`;
+            
+            // Update dashboard stats
+            document.getElementById('totalCoins').textContent = gameState.stats.k2Coins;
+            document.getElementById('totalPoints').textContent = gameState.stats.totalPoints;
+            document.getElementById('totalReferrals').textContent = gameState.stats.totalReferrals;
+            document.getElementById('dailyStreak').textContent = gameState.stats.dailyStreak;
+            document.getElementById('timeSpent').textContent = Math.floor(gameState.stats.timeSpent / 60) + 'h';
+            document.getElementById('virtualEarnings').textContent = '$' + gameState.stats.virtualEarnings;
+            
+            // Update referral info
+            document.getElementById('userReferralCode').textContent = gameState.user.referralCode;
+            document.getElementById('referralCount').textContent = gameState.stats.totalReferrals;
+            document.getElementById('referralEarnings').textContent = gameState.stats.totalReferrals * 5;
+            document.getElementById('conversionRate').textContent = gameState.stats.totalReferrals > 0 ? '85%' : '0%';
+            
+            // Update profile inputs
+            if (document.getElementById('profileUsername')) {
+                document.getElementById('profileUsername').value = gameState.user.username;
+            }
+            if (document.getElementById('profileDisplayName')) {
+                document.getElementById('profileDisplayName').value = gameState.user.displayName;
+            }
+            
+            // Update transfer balance
+            if (document.getElementById('availableBalance')) {
+                document.getElementById('availableBalance').textContent = gameState.stats.k2Coins;
+            }
+            
+            // Update leaderboard
+            document.getElementById('playerNameLeaderboard').textContent = gameState.user.displayName;
+            document.getElementById('playerRankLeaderboard').textContent = `Rango ${gameState.stats.rank}`;
+            document.getElementById('playerCoinsLeaderboard').textContent = `${gameState.stats.k2Coins} K2 Coins`;
+            
+            // Update module progress
+            updateModuleProgress();
+            
+            // Update game scores
+            document.getElementById('runnerBest').textContent = gameState.progress.gameScores.runner;
+            document.getElementById('puzzlesSolved').textContent = gameState.progress.gameScores.puzzle;
+            document.getElementById('triviaBest').textContent = gameState.progress.gameScores.trivia;
+        }
+
+        function updateModuleProgress() {
+            Object.keys(gameState.progress.modules).forEach(module => {
+                const progress = gameState.progress.modules[module];
+                const percentage = (progress.completed / progress.total) * 100;
+                
+                // Find module card and update progress
+                const moduleCards = document.querySelectorAll('.module-card');
+                moduleCards.forEach(card => {
+                    if (card.onclick && card.onclick.toString().includes(module)) {
+                        const progressBar = card.querySelector('.module-progress-fill');
+                        const progressText = card.querySelector('div:last-child');
+                        if (progressBar) progressBar.style.width = percentage + '%';
+                        if (progressText) progressText.textContent = `${progress.completed}/${progress.total} preguntas`;
+                    }
+                });
+            });
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+        }
+
+        // Quiz Functions
+        function startModule(moduleName) {
+            gameState.currentModule = moduleName;
+            gameState.currentQuestionIndex = 0;
+            gameState.moduleQuestions = [...moduleQuestions[moduleName]];
+            gameState.correctAnswers = 0;
+            
+            document.getElementById('quizContainer').classList.add('active');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = gameState.moduleQuestions[gameState.currentQuestionIndex];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionCounter').textContent = 
+                `Pregunta ${gameState.currentQuestionIndex + 1} de ${gameState.moduleQuestions.length}`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function selectOption(selectedIndex) {
+            const question = gameState.moduleQuestions[gameState.currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                option.onclick = null;
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            if (selectedIndex === question.correct) {
+                gameState.correctAnswers++;
+                gameState.stats.totalPoints += question.points;
+                gameState.stats.k2Coins += question.coins;
+                gameState.stats.virtualEarnings += question.points * 0.5;
+                
+                showNotification(`¡Correcto! +${question.coins} K2 Coins`, 'success');
+            } else {
+                showNotification('Respuesta incorrecta. ¡Sigue intentando!', 'error');
+            }
+            
+            updateAllDisplays();
+            checkRankUp();
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            gameState.currentQuestionIndex++;
+            
+            if (gameState.currentQuestionIndex < gameState.moduleQuestions.length) {
+                showQuestion();
+            } else {
+                completeModule();
+            }
+        }
+
+        function completeModule() {
+            const percentage = (gameState.correctAnswers / gameState.moduleQuestions.length) * 100;
+            let message = '';
+            let bonus = 0;
+            
+            if (percentage >= 80) {
+                message = '🏆 ¡Excelente! Dominas este módulo';
+                bonus = 100;
+                unlockAchievement(gameState.currentModule);
+            } else if (percentage >= 60) {
+                message = '👍 ¡Bien hecho! Puedes mejorar';
+                bonus = 50;
+            } else {
+                message = '📚 Necesitas estudiar más este tema';
+                bonus = 25;
+            }
+            
+            // Update module progress
+            gameState.progress.modules[gameState.currentModule].completed = gameState.correctAnswers;
+            
+            gameState.stats.k2Coins += bonus;
+            gameState.stats.virtualEarnings += bonus;
+            
+            showNotification(`${message} +${bonus} K2 Coins bonus`, 'success');
+            updateAllDisplays();
+            closeQuiz();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizContainer').classList.remove('active');
+        }
+
+        // Mini-Games
+        function startMiniGame(gameType) {
+            document.getElementById('gameCanvas').style.display = 'block';
+            document.getElementById('gameTitle').textContent = getGameTitle(gameType);
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+            
+            switch(gameType) {
+                case 'puzzle':
+                    initPuzzleGame(gameArea);
+                    break;
+                case 'memory':
+                    initMemoryGame(gameArea);
+                    break;
+                case 'trivia':
+                    initTriviaGame(gameArea);
+                    break;
+                case 'runner':
+                    initRunnerGame(gameArea);
+                    break;
+            }
+        }
+
+        function getGameTitle(gameType) {
+            const titles = {
+                'puzzle': 'Rompecabezas K2',
+                'memory': 'Memoria K2',
+                'trivia': 'Trivia Rápida',
+                'runner': 'K2 Runner'
+            };
+            return titles[gameType] || 'Mini-Juego';
+        }
+
+        function initPuzzleGame(container) {
+            const puzzleGrid = document.createElement('div');
+            puzzleGrid.className = 'puzzle-grid';
+            
+            // Create 4x4 puzzle
+            const pieces = [];
+            for (let i = 0; i < 15; i++) {
+                pieces.push(i + 1);
+            }
+            pieces.push(null); // Empty space
+            
+            // Shuffle pieces
+            for (let i = pieces.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pieces[i], pieces[j]] = [pieces[j], pieces[i]];
+            }
+            
+            pieces.forEach((piece, index) => {
+                const pieceDiv = document.createElement('div');
+                pieceDiv.className = 'puzzle-piece';
+                if (piece === null) {
+                    pieceDiv.classList.add('empty');
+                } else {
+                    pieceDiv.textContent = piece;
+                    pieceDiv.onclick = () => movePuzzlePiece(index, pieces, puzzleGrid);
+                }
+                puzzleGrid.appendChild(pieceDiv);
+            });
+            
+            container.appendChild(puzzleGrid);
+            
+            const instructions = document.createElement('p');
+            instructions.textContent = 'Haz clic en las piezas para moverlas y formar la secuencia 1-15';
+            instructions.style.textAlign = 'center';
+            instructions.style.marginTop = '20px';
+            container.appendChild(instructions);
+        }
+
+        function movePuzzlePiece(clickedIndex, pieces, grid) {
+            const emptyIndex = pieces.indexOf(null);
+            const canMove = isAdjacent(clickedIndex, emptyIndex);
+            
+            if (canMove) {
+                // Swap pieces
+                [pieces[clickedIndex], pieces[emptyIndex]] = [pieces[emptyIndex], pieces[clickedIndex]];
+                
+                // Update display
+                updatePuzzleDisplay(pieces, grid);
+                
+                // Check if solved
+                if (isPuzzleSolved(pieces)) {
+                    gameState.stats.k2Coins += 10;
+                    gameState.progress.gameScores.puzzle++;
+                    showNotification('¡Puzzle resuelto! +10 K2 Coins', 'success');
+                    updateAllDisplays();
+                }
+            }
+        }
+
+        function isAdjacent(index1, index2) {
+            const row1 = Math.floor(index1 / 4);
+            const col1 = index1 % 4;
+            const row2 = Math.floor(index2 / 4);
+            const col2 = index2 % 4;
+            
+            return Math.abs(row1 - row2) + Math.abs(col1 - col2) === 1;
+        }
+
+        function updatePuzzleDisplay(pieces, grid) {
+            const pieceElements = grid.children;
+            pieces.forEach((piece, index) => {
+                const element = pieceElements[index];
+                if (piece === null) {
+                    element.textContent = '';
+                    element.className = 'puzzle-piece empty';
+                } else {
+                    element.textContent = piece;
+                    element.className = 'puzzle-piece';
+                }
+            });
+        }
+
+        function isPuzzleSolved(pieces) {
+            for (let i = 0; i < 15; i++) {
+                if (pieces[i] !== i + 1) return false;
+            }
+            return pieces[15] === null;
+        }
+
+        function initMemoryGame(container) {
+            const products = ['🌿', '💊', '🥤', '💪', '🌱', '⚡', '🔥', '💎'];
+            const cards = [...products, ...products]; // Duplicate for pairs
+            
+            // Shuffle cards
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            
+            const memoryGrid = document.createElement('div');
+            memoryGrid.className = 'puzzle-grid';
+            memoryGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            
+            let flippedCards = [];
+            let matchedPairs = 0;
+            const startTime = Date.now();
+            
+            cards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'puzzle-piece';
+                cardDiv.textContent = '?';
+                cardDiv.dataset.value = card;
+                cardDiv.dataset.index = index;
+                
+                cardDiv.onclick = () => {
+                    if (flippedCards.length < 2 && !cardDiv.classList.contains('matched')) {
+                        cardDiv.textContent = card;
+                        cardDiv.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
+                        flippedCards.push(cardDiv);
+                        
+                        if (flippedCards.length === 2) {
+                            setTimeout(() => {
+                                if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
+                                    // Match found
+                                    flippedCards.forEach(c => c.classList.add('matched'));
+                                    matchedPairs++;
+                                    
+                                    if (matchedPairs === 8) {
+                                        const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+                                        gameState.stats.k2Coins += 15;
+                                        showNotification(`¡Memoria completada en ${timeSpent}s! +15 K2 Coins`, 'success');
+                                        updateAllDisplays();
+                                    }
+                                } else {
+                                    // No match
+                                    flippedCards.forEach(c => {
+                                        c.textContent = '?';
+                                        c.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+                                    });
+                                }
+                                flippedCards = [];
+                            }, 1000);
+                        }
+                    }
+                };
+                
+                memoryGrid.appendChild(cardDiv);
+            });
+            
+            container.appendChild(memoryGrid);
+            
+            const instructions = document.createElement('p');
+            instructions.textContent = 'Encuentra los pares de productos K2. ¡Memoriza las posiciones!';
+            instructions.style.textAlign = 'center';
+            instructions.style.marginTop = '20px';
+            container.appendChild(instructions);
+        }
+
+        function initTriviaGame(container) {
+            const triviaQuestions = [
+                { q: "¿Cuántos productos principales tiene K2?", a: "5" },
+                { q: "¿Cuál es el rango más alto en K2?", a: "Diamante" },
+                { q: "¿Qué significa la K en K2?", a: "Konsume" },
+                { q: "¿Cuántos niveles tiene el Bono Regalías?", a: "10" }
+            ];
+            
+            let currentQ = 0;
+            let score = 0;
+            let timeLeft = 30;
+            
+            const triviaContainer = document.createElement('div');
+            triviaContainer.style.textAlign = 'center';
+            
+            const timer = document.createElement('div');
+            timer.style.fontSize = '2rem';
+            timer.style.color = 'var(--warning-color)';
+            timer.style.marginBottom = '20px';
+            
+            const question = document.createElement('div');
+            question.style.fontSize = '1.2rem';
+            question.style.marginBottom = '20px';
+            
+            const answer = document.createElement('input');
+            answer.type = 'text';
+            answer.style.padding = '10px';
+            answer.style.fontSize = '1rem';
+            answer.style.borderRadius = '5px';
+            answer.style.border = '2px solid var(--primary-color)';
+            answer.style.background = '#333';
+            answer.style.color = 'white';
+            answer.style.marginBottom = '20px';
+            
+            const submitBtn = document.createElement('button');
+            submitBtn.className = 'btn btn-primary';
+            submitBtn.textContent = 'Responder';
+            
+            triviaContainer.appendChild(timer);
+            triviaContainer.appendChild(question);
+            triviaContainer.appendChild(answer);
+            triviaContainer.appendChild(submitBtn);
+            container.appendChild(triviaContainer);
+            
+            function showTriviaQuestion() {
+                if (currentQ < triviaQuestions.length && timeLeft > 0) {
+                    question.textContent = triviaQuestions[currentQ].q;
+                    answer.value = '';
+                    answer.focus();
+                }
+            }
+            
+            function checkTriviaAnswer() {
+                if (answer.value.toLowerCase().includes(triviaQuestions[currentQ].a.toLowerCase())) {
+                    score++;
+                    showNotification('¡Correcto!', 'success');
+                } else {
+                    showNotification(`Incorrecto. Era: ${triviaQuestions[currentQ].a}`, 'error');
+                }
+                
+                currentQ++;
+                if (currentQ >= triviaQuestions.length) {
+                    endTriviaGame();
+                } else {
+                    showTriviaQuestion();
+                }
+            }
+            
+            function endTriviaGame() {
+                const coins = score * 3;
+                gameState.stats.k2Coins += coins;
+                gameState.progress.gameScores.trivia = Math.max(gameState.progress.gameScores.trivia, score);
+                showNotification(`Trivia terminada! ${score}/4 correctas. +${coins} K2 Coins`, 'success');
+                updateAllDisplays();
+            }
+            
+            submitBtn.onclick = checkTriviaAnswer;
+            answer.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkTriviaAnswer();
+            });
+            
+            // Timer
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                timer.textContent = `⏰ ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endTriviaGame();
+                }
+            }, 1000);
+            
+            showTriviaQuestion();
+        }
+
+        function initRunnerGame(container) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 200;
+            canvas.style.background = 'linear-gradient(135deg, #000000, #1a1a1a)';
+            canvas.style.border = '2px solid var(--primary-color)';
+            canvas.style.borderRadius = '10px';
+            canvas.style.maxWidth = '100%';
+            
+            const ctx = canvas.getContext('2d');
+            container.appendChild(canvas);
+            
+            // Game state
+            let player = { x: 50, y: 120, width: 30, height: 30, velocityY: 0, jumping: false };
+            let obstacles = [];
+            let coins = [];
+            let score = 0;
+            let coinsCollected = 0;
+            let gameSpeed = 2;
+            let isRunning = true;
+            
+            // Controls
+            const controls = document.createElement('div');
+            controls.style.textAlign = 'center';
+            controls.style.marginTop = '15px';
+            controls.innerHTML = `
+                <button class="btn btn-primary" onclick="jump()">🚀 Saltar</button>
+                <span style="margin: 0 20px; color: var(--warning-color);">Puntos: <span id="runnerScore">0</span></span>
+                <span style="color: var(--warning-color);">Monedas: <span id="runnerCoins">0</span></span>
+            `;
+            container.appendChild(controls);
+            
+            // Jump function
+            window.jump = function() {
+                if (!player.jumping && isRunning) {
+                    player.velocityY = -12;
+                    player.jumping = true;
+                }
+            };
+            
+            // Game loop
+            function gameLoop() {
+                if (!isRunning) return;
+                
+                // Update player
+                player.velocityY += 0.8; // gravity
+                player.y += player.velocityY;
+                
+                if (player.y >= 120) {
+                    player.y = 120;
+                    player.velocityY = 0;
+                    player.jumping = false;
+                }
+                
+                // Generate obstacles
+                if (Math.random() < 0.005) {
+                    obstacles.push({ x: canvas.width, y: 135, width: 20, height: 35 });
+                }
+                
+                // Generate coins
+                if (Math.random() < 0.003) {
+                    coins.push({ x: canvas.width, y: Math.random() < 0.5 ? 100 : 80, width: 15, height: 15 });
+                }
+                
+                // Move obstacles and coins
+                obstacles = obstacles.filter(obstacle => {
+                    obstacle.x -= gameSpeed;
+                    return obstacle.x > -obstacle.width;
+                });
+                
+                coins = coins.filter(coin => {
+                    coin.x -= gameSpeed;
+                    return coin.x > -coin.width;
+                });
+                
+                // Check collisions
+                obstacles.forEach(obstacle => {
+                    if (collision(player, obstacle)) {
+                        isRunning = false;
+                        gameState.stats.k2Coins += coinsCollected;
+                        gameState.progress.gameScores.runner = Math.max(gameState.progress.gameScores.runner, score);
+                        showNotification(`¡Juego terminado! +${coinsCollected} K2 Coins`, 'success');
+                        updateAllDisplays();
+                    }
+                });
+                
+                coins = coins.filter(coin => {
+                    if (collision(player, coin)) {
+                        coinsCollected++;
+                        document.getElementById('runnerCoins').textContent = coinsCollected;
+                        return false;
+                    }
+                    return true;
+                });
+                
+                // Update score
+                score++;
+                if (score % 500 === 0) gameSpeed += 0.2;
+                document.getElementById('runnerScore').textContent = score;
+                
+                // Draw everything
+                draw();
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            function draw() {
+                // Clear canvas
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw ground
+                ctx.fillStyle = '#ff6600';
+                ctx.fillRect(0, 170, canvas.width, 30);
+                
+                // Draw player
+                ctx.fillStyle = '#ff6600';
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '16px Montserrat';
+                ctx.fillText('K2', player.x + 5, player.y + 20);
+                
+                // Draw obstacles
+                ctx.fillStyle = '#ff0000';
+                obstacles.forEach(obstacle => {
+                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                });
+                
+                // Draw coins
+                ctx.fillStyle = '#ffd700';
+                coins.forEach(coin => {
+                    ctx.beginPath();
+                    ctx.arc(coin.x + coin.width/2, coin.y + coin.height/2, coin.width/2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            function collision(rect1, rect2) {
+                return rect1.x < rect2.x + rect2.width &&
+                       rect1.x + rect1.width > rect2.x &&
+                       rect1.y < rect2.y + rect2.height &&
+                       rect1.y + rect1.height > rect2.y;
+            }
+            
+            // Start game
+            gameLoop();
+            
+            // Keyboard controls
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    jump();
+                }
+            });
+        }
+
+        function closeGame() {
+            document.getElementById('gameCanvas').style.display = 'none';
+        }
+
+        // Social Functions
+        function copyReferralCode() {
+            navigator.clipboard.writeText(gameState.user.referralCode).then(() => {
+                showNotification('¡Código copiado al portapapeles!', 'success');
+            });
+        }
+
+        function shareOnFacebook() {
+            const message = `¡Únete a mí en Ruta K2! Aprende sobre salud, impacto y riqueza mientras juegas. Usa mi código: ${gameState.user.referralCode}`;
+            const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        function followFacebook() {
+            window.open('https://www.facebook.com/profile.php?id=', '_blank');
+            // Simulate follow verification after 3 seconds
+            setTimeout(() => {
+                if (!gameState.progress.socialFollows.includes('facebook')) {
+                    gameState.progress.socialFollows.push('facebook');
+                    gameState.stats.k2Coins += 10;
+                    showNotification('¡Gracias por seguir nuestro Facebook! +10 K2 Coins', 'success');
+                    updateAllDisplays();
+                    updateSocialButtons();
+                }
+            }, 3000);
+        }
+
+        function followTikTok() {
+            window.open('https://www.tiktok.com/@konexionk2_oficial', '_blank');
+            // Simulate follow verification after 3 seconds
+            setTimeout(() => {
+                if (!gameState.progress.socialFollows.includes('tiktok')) {
+                    gameState.progress.socialFollows.push('tiktok');
+                    gameState.stats.k2Coins += 10;
+                    showNotification('¡Gracias por seguir nuestro TikTok! +10 K2 Coins', 'success');
+                    updateAllDisplays();
+                    updateSocialButtons();
+                }
+            }, 3000);
+        }
+
+        function visitWebsite() {
+            window.open('https://www.konexionk2.com', '_blank');
+            // Simulate visit verification
+            setTimeout(() => {
+                if (!gameState.progress.socialFollows.includes('website')) {
+                    gameState.progress.socialFollows.push('website');
+                    gameState.stats.k2Coins += 5;
+                    showNotification('¡Gracias por visitar nuestro sitio web! +5 K2 Coins', 'success');
+                    updateAllDisplays();
+                    updateSocialButtons();
+                }
+            }, 2000);
+        }
+
+        function shareOnTwitter() {
+            const message = `🚀 ¡Estoy aprendiendo y ganando en Ruta K2! Únete con mi código: ${gameState.user.referralCode} #RutaK2 #Salud #Riqueza`;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareOnWhatsApp() {
+            const message = `🌟 ¡Hola! Te invito a unirte a Ruta K2, una plataforma increíble donde aprendes sobre salud, impacto y riqueza mientras juegas. Usa mi código de referido: ${gameState.user.referralCode} y comienza tu aventura: ${window.location.href}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            const message = `Descubre Ruta K2: la plataforma gamificada para aprender sobre salud, impacto y riqueza. Código de referido: ${gameState.user.referralCode}`;
+            const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Ruta K2')}&summary=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        function generateReferralLink() {
+            const customLink = `${window.location.href}?ref=${gameState.user.referralCode}`;
+            navigator.clipboard.writeText(customLink).then(() => {
+                showNotification('¡Link personalizado copiado!', 'success');
+            });
+        }
+
+        function updateSocialButtons() {
+            // Update Facebook button
+            const facebookBtn = document.getElementById('followFacebookBtn');
+            if (gameState.progress.socialFollows.includes('facebook')) {
+                facebookBtn.innerHTML = '<i class="fab fa-facebook-f"></i> ✓ Seguido';
+                facebookBtn.style.opacity = '0.6';
+                facebookBtn.onclick = null;
+            }
+
+            // Update TikTok button
+            const tiktokBtn = document.getElementById('followTikTokBtn');
+            if (gameState.progress.socialFollows.includes('tiktok')) {
+                tiktokBtn.innerHTML = '<i class="fab fa-tiktok"></i> ✓ Seguido';
+                tiktokBtn.style.opacity = '0.6';
+                tiktokBtn.onclick = null;
+            }
+
+            // Update Website button
+            const websiteBtn = document.getElementById('visitWebsite<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966f4f4e1119824d',t:'MTc1MzgyMDM1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
